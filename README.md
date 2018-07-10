@@ -178,7 +178,7 @@ var abi = require('solc/abi')
 
 var inputABI = [{"constant":false,"inputs":[],"name":"hello","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"}]
 var outputABI = abi.update('0.3.6', inputABI)
-// Output contains: [{"constant":false,"inputs":[],"name":"hello","outputs":[{"name":"","type":"string"}],"payable":true,"type":"function"},{"type":"fallback","payable":true}]
+// Output contains: [{"inputs":[],"name":"hello","outputs":[{"name":"","type":"string"}],"payable":true,"stateMutability":"payable","type":"function"},{"type":"fallback","payable":true}]
 
 ```
 

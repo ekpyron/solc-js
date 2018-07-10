@@ -34,6 +34,9 @@ function update (compilerVersion, abi) {
           item.stateMutability = 'nonpayable';
         }
       }
+
+      // remove constant field
+      delete item['constant'];
     }
   }
 
@@ -58,6 +61,35 @@ function update (compilerVersion, abi) {
   return abi;
 }
 
+function downgrade (compilerVersion, abi) {
+  if (semver.neq(compilerVersion, '0.4.24')) {
+    throw new Error('The specified compiler version is not supported for ABI downgrades. Currently only downgrades from 0.5.* ABIs to 0.4.24 ABIs are supported.');
+  }
+
+  for (var i = 0; i < abi.length; i++) {
+    var item = abi[i];
+    if (item.stateMutability === 'view' || item.stateMutability === 'pure' || item.constant) {
+      item.constant = true;
+    } else {
+      item.constant = false;
+    }
+  }
+
+  return abi;
+}
+
+function translate (abi, inputVersion, outputVersion) {
+  if (semver.neq(inputVersion, '0.5.0') {
+    abi = update(inputVersion, abi);
+  }
+  if (semver.neq(outputVersion, '0.5.0') {
+    abi = downgrade(outputVersion, abi);
+  }
+  return abi;
+}
+
 module.exports = {
+  downgrade: downgrade,
+  translate: translate,
   update: update
 };
